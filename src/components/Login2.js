@@ -1,12 +1,52 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Alert, Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+
+
 
 
 
 const {width, height} = Dimensions.get("screen");
 
 export default function App(){
-
+  const [usuario, setUsuario]= useState(null);
+  const [contrasena, setContrasena]= useState(null);
+  const presIniciarSesion = async () =>{
+    if(!usuario || !contrasena){
+      console.log("Debe escribir los datos completos");
+      Alert.alert("MEDI","Debe escribir los datos completos");
+    }
+    else{
+      try{
+          const response = await fetch('http://localhost:4000/api/autenticacion',{
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            usuario:usuario,
+            contrasena:contrasena
+          })
+          });
+          const json = await response.json();
+          console.log(json);
+          if(json.data.length==0){
+            console.log(json.msj);
+            Alert.alert("MEDI", json.msj);
+          }
+          else{
+            const cliente=json.stringify(json.data);
+            await AsyncStorage.setItem('cliente',cliente);
+            console.log(json.msj);
+          }
+      }catch(error){
+        console.error(error);
+      }
+    }
+  };
+  
     return(
         
         <View style={styles.container}>
@@ -17,17 +57,17 @@ export default function App(){
             <View style={styles.ControllerContainer}>
                 <View style={styles.controllers}>
                   <View style={styles.PaddingCorreo}>
-                  <TextInput placeholder="Correo" placeholderTextColor="#866eb5"  style={styles.input}>
+                  <TextInput value={usuario} onChangeText={setUsuario} placeholder="Correo" placeholderTextColor="#866eb5"  style={styles.input}>
                     </TextInput>
                   </View>
                     
-                    <TextInput placeholder="contraseña" placeholderTextColor="#866eb5" style={styles.input}>
+                    <TextInput value={contrasena} onChangeText={setContrasena} placeholder="contraseña" placeholderTextColor="#866eb5" style={styles.input}>
 
                     </TextInput>
                 </View>
                 <View style={styles.contenedorBotones}>
                     <View style={styles.boton}>
-                        <Button title="Iniciar Sesión" color="#866eb5">
+                        <Button title="Iniciar Sesión" color="#866eb5" onPress={presIniciarSesion}>
                         </Button>
                     </View>
                     <View style={styles.boton}>

@@ -16,9 +16,11 @@ export default function App(){
                 </View>
             <View style={styles.ControllerContainer}>
                 <View style={styles.controllers}>
-                    <TextInput placeholder="Correo" placeholderTextColor="#866eb5"  style={styles.input}>
-
+                  <View style={styles.PaddingCorreo}>
+                  <TextInput placeholder="Correo" placeholderTextColor="#866eb5"  style={styles.input}>
                     </TextInput>
+                  </View>
+                    
                     <TextInput placeholder="contraseña" placeholderTextColor="#866eb5" style={styles.input}>
 
                     </TextInput>
@@ -78,9 +80,7 @@ const styles = StyleSheet.create({
         flexDirection:"column",
         alignItems: "stretch",
         justifyContent:"center",
-        borderWidth: 1,
-        borderColor: "#866eb5",
-        borderRadius:25,
+        
         backgroundColor:"#fff",
         padding:10,
       },
@@ -119,4 +119,7 @@ const styles = StyleSheet.create({
         marginLeft:10,
         marginRight:10,
       },
+      PaddingCorreo:{
+        paddingBottom:50,
+      }
 });

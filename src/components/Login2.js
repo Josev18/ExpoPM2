@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 
 
-const {width, height} = Dimensions.get("screen");
+
 
 export default function App(){
   const [usuario, setUsuario]= useState(null);
@@ -19,15 +19,15 @@ export default function App(){
     }
     else{
       try{
-          const response = await fetch('http://localhost:4000/api/autenticacion',{
+          const response = await fetch('http://192.168.1.3:4000/api/autenticacion',{
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            usuario:usuario,
-            contrasena:contrasena
+            UsuarioNombre:usuario,
+            UsuarioContra:contrasena
           })
           });
           const json = await response.json();
@@ -37,8 +37,8 @@ export default function App(){
             Alert.alert("MEDI", json.msj);
           }
           else{
-            const cliente=json.stringify(json.data);
-            await AsyncStorage.setItem('cliente',cliente);
+            const cliente=JSON.stringify(json.data);
+            await AsyncStorage.setItem('ModeloCliente',cliente);
             console.log(json.msj);
           }
       }catch(error){
